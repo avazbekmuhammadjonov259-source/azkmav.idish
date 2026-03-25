@@ -3,28 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AzK</title>
+<title>AZK SHOP</title>
 
 <style>
 body {
-  margin: 0;
   font-family: Arial;
-  background: #111;
+  background: #0b1220;
   color: white;
   text-align: center;
 }
 
-h1 {
-  padding: 20px;
+/* LOGO */
+.logo {
+  font-size: 40px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-top: 20px;
 }
 
-.btn {
+.azk { color: #3b82f6; }
+.shop { color: #22c55e; }
+.star {
+  color: gold;
+  animation: blink 1s infinite;
+}
+.idish { color: #ef4444; }
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* PRODUCTS */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background: #1e293b;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 15px;
+  width: 160px;
+}
+
+.image {
+  width: 100%;
+  height: 100px;
+  background: #2563eb;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.price { color: #cbd5f5; }
+.unit { color: #94a3b8; font-size: 13px; }
+
+button {
+  padding: 5px 10px;
+  margin: 5px;
+}
+
+.buy-btn {
   background: gold;
   color: black;
   padding: 15px 25px;
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 20px;
+  margin-top: 30px;
   border-radius: 10px;
   font-weight: bold;
 }
@@ -34,10 +80,121 @@ h1 {
 
 <body>
 
-<h1>AzK</h1>
-<p>Sifatli idishlar</p>
+<!-- LOGO -->
+<h1 class="logo">
+  <span class="azk">AZK</span>
+  <span class="shop">SHOP</span>
+  <span class="star">★</span>
+  <span class="idish">IDISH</span>
+</h1>
 
-<a class="btn" href="https://t.me/awazbee?text=Salom%20AzK%20zakaz">Zakaz berish</a>
+<!-- PRODUCTS -->
+<div class="container">
+
+<div class="card">
+<div class="image"></div>
+<h3>Kosa</h3>
+<div class="price">3,000 so‘m</div>
+<div class="unit">1 dona</div>
+<button onclick="minus(0)">-</button>
+<span id="c0">0</span>
+<button onclick="plus(0)">+</button>
+</div>
+
+<div class="card">
+<div class="image"></div>
+<h3>Piyola</h3>
+<div class="price">2,000 so‘m</div>
+<div class="unit">1 dona</div>
+<button onclick="minus(1)">-</button>
+<span id="c1">0</span>
+<button onclick="plus(1)">+</button>
+</div>
+
+<div class="card">
+<div class="image"></div>
+<h3>Tovoq</h3>
+<div class="price">15,000 so‘m</div>
+<div class="unit">1 dona</div>
+<button onclick="minus(2)">-</button>
+<span id="c2">0</span>
+<button onclick="plus(2)">+</button>
+</div>
+
+<div class="card">
+<div class="image"></div>
+<h3>Qoshiq</h3>
+<div class="price">40,000 so‘m</div>
+<div class="unit">1 pachka (20 dona)</div>
+<button onclick="minus(3)">-</button>
+<span id="c3">0</span>
+<button onclick="plus(3)">+</button>
+</div>
+
+<div class="card">
+<div class="image"></div>
+<h3>Vaza</h3>
+<div class="price">50,000 so‘m</div>
+<div class="unit">1 dona</div>
+<button onclick="minus(4)">-</button>
+<span id="c4">0</span>
+<button onclick="plus(4)">+</button>
+</div>
+
+</div>
+
+<!-- BUY BUTTON -->
+<button class="buy-btn" onclick="buy()">Zakaz berish</button>
+
+<script>
+let counts = [0,0,0,0,0];
+
+let names = ["Kosa","Piyola","Tovoq","Qoshiq (pachka)","Vaza"];
+let prices = [3000,2000,15000,40000,50000];
+
+function plus(i){
+  counts[i]++;
+  document.getElementById("c"+i).innerText = counts[i];
+}
+
+function minus(i){
+  if(counts[i] > 0) counts[i]--;
+  document.getElementById("c"+i).innerText = counts[i];
+}
+
+function buy(){
+
+  let name = prompt("Ismingizni kiriting:");
+  if(!name) return;
+
+  let address = prompt("Manzilingizni kiriting:");
+  if(!address) return;
+
+  let text = "🛒 AZK SHOP ★ IDISH%0A";
+  let total = 0;
+
+  for(let i=0;i<counts.length;i++){
+    if(counts[i] > 0){
+      text += names[i] + " - " + counts[i] + "%0A";
+      total += counts[i] * prices[i];
+    }
+  }
+
+  if(total == 0){
+    alert("Hech narsa tanlanmadi");
+    return;
+  }
+
+  let date = new Date().toLocaleString();
+
+  text += "%0A👤 Ism: " + name;
+  text += "%0A📍 Manzil: " + address;
+  text += "%0A📅 Sana: " + date;
+  text += "%0A💰 Jami: " + total + " so‘m";
+
+  window.open("https://t.me/awazbee?text=" + text);
+}
+</script>
 
 </body>
 </html>
