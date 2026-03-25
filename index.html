@@ -15,47 +15,42 @@ body {
 
 /* LOGO */
 .logo {
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bold;
-  letter-spacing: 2px;
   margin-top: 20px;
 }
-
 .azk { color: #3b82f6; }
 .shop { color: #22c55e; }
-.star {
-  color: gold;
-  animation: blink 1s infinite;
-}
+.star { color: gold; animation: blink 1s infinite; }
 .idish { color: #ef4444; }
 
 @keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0.3; }
-  100% { opacity: 1; }
+  0%{opacity:1;}
+  50%{opacity:0.3;}
+  100%{opacity:1;}
 }
 
-/* PRODUCTS */
+/* GRID (2 QATOR) */
 .container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 160px);
   justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
+/* CARD */
 .card {
   background: #1e293b;
-  margin: 10px;
   padding: 15px;
   border-radius: 15px;
-  width: 160px;
 }
 
-.image {
+.img {
   width: 100%;
   height: 100px;
-  background: #2563eb;
+  object-fit: cover;
   border-radius: 10px;
-  margin-bottom: 10px;
 }
 
 .price { color: #cbd5f5; }
@@ -70,29 +65,54 @@ button {
   background: gold;
   color: black;
   padding: 15px 25px;
-  margin-top: 30px;
+  margin-top: 25px;
   border-radius: 10px;
   font-weight: bold;
 }
-</style>
 
+/* POPUP */
+#popup, #success {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  justify-content:center;
+  align-items:center;
+}
+
+#popup { background:#000000cc; }
+#success { background:#000000ee; }
+
+.popup-box {
+  background:#1e293b;
+  padding:20px;
+  border-radius:15px;
+}
+
+input {
+  width:90%;
+  padding:10px;
+  margin:5px;
+  font-size:16px;
+}
+</style>
 </head>
 
 <body>
 
 <!-- LOGO -->
 <h1 class="logo">
-  <span class="azk">AZK</span>
-  <span class="shop">SHOP</span>
-  <span class="star">★</span>
-  <span class="idish">IDISH</span>
+<span class="azk">AZK</span>
+<span class="shop">SHOP</span>
+<span class="star">★</span>
+<span class="idish">IDISH</span>
 </h1>
 
 <!-- PRODUCTS -->
 <div class="container">
 
 <div class="card">
-<div class="image"></div>
+<img src="kosa.jpg" class="img">
 <h3>Kosa</h3>
 <div class="price">3,000 so‘m</div>
 <div class="unit">1 dona</div>
@@ -102,7 +122,7 @@ button {
 </div>
 
 <div class="card">
-<div class="image"></div>
+<div class="img" style="background:#2563eb;"></div>
 <h3>Piyola</h3>
 <div class="price">2,000 so‘m</div>
 <div class="unit">1 dona</div>
@@ -112,7 +132,7 @@ button {
 </div>
 
 <div class="card">
-<div class="image"></div>
+<div class="img" style="background:#2563eb;"></div>
 <h3>Tovoq</h3>
 <div class="price">15,000 so‘m</div>
 <div class="unit">1 dona</div>
@@ -122,7 +142,7 @@ button {
 </div>
 
 <div class="card">
-<div class="image"></div>
+<div class="img" style="background:#2563eb;"></div>
 <h3>Qoshiq</h3>
 <div class="price">40,000 so‘m</div>
 <div class="unit">1 pachka (20 dona)</div>
@@ -132,7 +152,7 @@ button {
 </div>
 
 <div class="card">
-<div class="image"></div>
+<div class="img" style="background:#2563eb;"></div>
 <h3>Vaza</h3>
 <div class="price">50,000 so‘m</div>
 <div class="unit">1 dona</div>
@@ -143,56 +163,96 @@ button {
 
 </div>
 
-<!-- BUY BUTTON -->
 <button class="buy-btn" onclick="buy()">Zakaz berish</button>
 
-<script>
-let counts = [0,0,0,0,0];
+<!-- POPUP -->
+<div id="popup">
+<div class="popup-box">
+<h2>MA'LUMOT</h2>
+<input id="name" placeholder="ISM">
+<input id="phone" placeholder="TELEFON">
+<input id="address" placeholder="MANZIL">
+<button onclick="sendOrder()">Zakaz berish</button>
+</div>
+</div>
 
-let names = ["Kosa","Piyola","Tovoq","Qoshiq (pachka)","Vaza"];
-let prices = [3000,2000,15000,40000,50000];
+<!-- SUCCESS -->
+<div id="success">
+<div>
+<h1 style="color:lime;">✔</h1>
+<h2>Zakaz yuborildi!</h2>
+</div>
+</div>
+
+<script>
+let counts=[0,0,0,0,0];
+let names=["Kosa","Piyola","Tovoq","Qoshiq(pachka)","Vaza"];
+let prices=[3000,2000,15000,40000,50000];
 
 function plus(i){
-  counts[i]++;
-  document.getElementById("c"+i).innerText = counts[i];
+counts[i]++;
+document.getElementById("c"+i).innerText=counts[i];
 }
 
 function minus(i){
-  if(counts[i] > 0) counts[i]--;
-  document.getElementById("c"+i).innerText = counts[i];
+if(counts[i]>0)counts[i]--;
+document.getElementById("c"+i).innerText=counts[i];
 }
 
 function buy(){
+document.getElementById("popup").style.display="flex";
+}
 
-  let name = prompt("Ismingizni kiriting:");
-  if(!name) return;
+function sendOrder(){
 
-  let address = prompt("Manzilingizni kiriting:");
-  if(!address) return;
+let name=document.getElementById("name").value;
+let phone=document.getElementById("phone").value;
+let address=document.getElementById("address").value;
 
-  let text = "🛒 AZK SHOP ★ IDISH%0A";
-  let total = 0;
+if(!name||!phone||!address){
+alert("To‘ldiring");
+return;
+}
 
-  for(let i=0;i<counts.length;i++){
-    if(counts[i] > 0){
-      text += names[i] + " - " + counts[i] + "%0A";
-      total += counts[i] * prices[i];
-    }
-  }
+let text="🛒 AZK SHOP ★ IDISH\n";
+let total=0;
 
-  if(total == 0){
-    alert("Hech narsa tanlanmadi");
-    return;
-  }
+for(let i=0;i<counts.length;i++){
+if(counts[i]>0){
+text+=names[i]+" - "+counts[i]+"\n";
+total+=counts[i]*prices[i];
+}
+}
 
-  let date = new Date().toLocaleString();
+if(total==0){
+alert("Mahsulot yo‘q");
+return;
+}
 
-  text += "%0A👤 Ism: " + name;
-  text += "%0A📍 Manzil: " + address;
-  text += "%0A📅 Sana: " + date;
-  text += "%0A💰 Jami: " + total + " so‘m";
+let date=new Date().toLocaleString();
 
-  window.open("https://t.me/awazbee?text=" + text);
+text+="\n👤 Ism: "+name;
+text+="\n📞 Tel: "+phone;
+text+="\n📍 Manzil: "+address;
+text+="\n📅 Sana: "+date;
+text+="\n💰 Jami: "+total+" so‘m";
+
+fetch("https://api.telegram.org/bot8623159023:AAErEhpjMOklCMVCXLeRPfZsKqnsgeDA2Eo/sendMessage",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+chat_id:"1206122142",
+text:text
+})
+});
+
+document.getElementById("popup").style.display="none";
+document.getElementById("success").style.display="flex";
+
+setTimeout(()=>{
+document.getElementById("success").style.display="none";
+},2000);
+
 }
 </script>
 
